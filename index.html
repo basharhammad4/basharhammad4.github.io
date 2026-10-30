@@ -37,7 +37,8 @@
 }
 *{box-sizing:border-box}
 html{height:100%}
-body{margin:0;background:var(--porcelain);color:var(--ink);font-family:var(--body);font-size:16px;line-height:1.55;-webkit-font-smoothing:antialiased;overflow-x:hidden}
+html{overflow-x:clip}
+body{margin:0;background:var(--porcelain);color:var(--ink);font-family:var(--body);font-size:16px;line-height:1.55;-webkit-font-smoothing:antialiased;overflow-x:clip}
 body::before{content:"";position:fixed;inset:0 0 auto;height:env(safe-area-inset-top,0px);z-index:90;background:var(--porcelain)}
 html.lenis,html.lenis body{height:auto}
 .lenis.lenis-smooth{scroll-behavior:auto!important}
@@ -75,7 +76,7 @@ p{margin:0}
 .nav li a{position:relative;font-size:15px;padding:8px 0;display:inline-block}
 .nav li a::after{content:"";position:absolute;left:50%;bottom:0;width:5px;height:5px;border-radius:50%;background:#fff;transform:translate(-50%,8px) scale(0);transition:transform .35s var(--ease-out)}
 .nav li a:hover::after{transform:translate(-50%,0) scale(1)}
-@media (max-width:860px){.nav ul{display:none}}
+@media (max-width:860px){.nav ul{display:none}.nav{mix-blend-mode:normal;color:var(--ink)}.nav .mark{background:rgba(239,239,236,.88);padding:8px 12px 8px 10px;border-radius:999px}.nav .wrap{height:68px}}
 .fab{position:fixed;right:max(24px,env(safe-area-inset-right,0px));top:calc(env(safe-area-inset-top,0px) + 18px);width:64px;height:64px;border-radius:50%;background:var(--ink);color:var(--porcelain);z-index:120;display:grid;place-items:center;transform:scale(0);box-shadow:0 10px 30px rgba(0,0,0,.18)}
 .fab-ring{position:absolute;inset:0;width:100%;height:100%;transform:rotate(-90deg)}
 .fab-ring circle{fill:none;stroke-width:1.5;stroke:rgba(239,239,236,.18)}
@@ -140,6 +141,7 @@ p{margin:0}
 .b-clear b{font-family:var(--display);font-weight:500;font-size:15px;letter-spacing:-.01em}
 .sheen{position:absolute;inset:0;pointer-events:none;background:radial-gradient(260px circle at var(--sx,50%) var(--sy,50%),rgba(255,255,255,.55),rgba(255,255,255,0) 60%),linear-gradient(115deg,transparent 30%,rgba(120,160,255,.14) 45%,rgba(255,160,220,.12) 55%,transparent 70%);mix-blend-mode:soft-light;opacity:var(--sh,0);transition:opacity .4s}
 .face.back .sheen{mix-blend-mode:screen}
+@media (hover:none){.sheen{display:none}.face{box-shadow:0 18px 40px -18px rgba(0,0,0,.35)}}
 .badge-hint{margin-top:14px;font-family:var(--mono);font-size:10px;letter-spacing:.12em;text-transform:uppercase;color:var(--graphite)}
 .name{position:relative;z-index:3;white-space:nowrap;display:flex;gap:.25em;font-family:var(--display);font-weight:500;font-size:clamp(88px,15.5vw,250px);letter-spacing:-.045em;line-height:.9;margin-top:calc(-.1em);padding-bottom:clamp(16px,2vw,32px);font-variation-settings:"wdth" 100;will-change:transform}
 .name span{display:inline-block}
@@ -443,7 +445,7 @@ p{margin:0}
           <div class="badge-inner" id="badgeInner">
             <div class="face front">
               <div class="b-top"><span class="b-mark">BH</span><span class="b-tag">GRC · 2026</span></div>
-              <div class="b-photo"><img src="assets/portrait.jpg" alt="" width="1315" height="1800"></div>
+              <div class="b-photo"><img src="assets/portrait-sm.jpg" alt="" width="526" height="720"></div>
               <div class="b-name">Bashar<br>Hammad</div>
               <div class="b-role">GRC Consultant<br><span>Cybersecurity Risk &amp; Compliance</span></div>
               <div class="b-foot"><span class="b-id">ID BH-0531 · AMMAN, JO</span><span class="barcode" aria-hidden="true"></span></div>
@@ -684,7 +686,7 @@ p{margin:0}
   <footer class="dark contact" id="contact">
     <div class="wrap">
       <div class="head">
-        <h2><span class="avatar"><img src="assets/portrait.jpg" alt="" width="200" height="200"></span><span class="mask"><i>Let's work</i></span><span class="mask"><i>together</i></span></h2>
+        <h2><span class="avatar"><img src="assets/portrait-sm.jpg" alt="" width="526" height="720"></span><span class="mask"><i>Let's work</i></span><span class="mask"><i>together</i></span></h2>
       </div>
       <div class="rule">
         <div class="cta"><button class="round" id="emailBtn" type="button">Get in touch</button></div>
@@ -888,13 +890,13 @@ p{margin:0}
   watch($('#hero'));watch($('#tk'));watch($('#footprint'));
 
   /* ---------- kinetic name: compresses as the hero scrolls out ---------- */
-  if(hasGsap&&!reduce){
+  if(hasGsap&&!reduce&&matchMedia('(min-width: 901px)').matches){
     const kin={w:100,ls:-0.045};
     gsap.to(kin,{w:68,ls:-0.02,ease:'none',scrollTrigger:{trigger:'#hero',start:'top top',end:'bottom top',scrub:0.6},onUpdate:()=>{name.style.fontVariationSettings=`"wdth" ${kin.w.toFixed(1)}`;name.style.letterSpacing=kin.ls.toFixed(3)+'em';}});
   }
 
   /* ---------- velocity skew on the framework rows ---------- */
-  if(hasGsap&&!reduce&&lenis){
+  if(hasGsap&&!reduce&&lenis&&fine){
     const rowsEl=$('#fwRows');const sk=gsap.quickTo(rowsEl,'skewY',{duration:.5,ease:'power3'});
     lenis.on('scroll',e=>{sk(gsap.utils.clamp(-3.5,3.5,e.velocity*0.08));});
   }
